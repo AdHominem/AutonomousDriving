@@ -1,0 +1,68 @@
+<ul>
+<li><a href="#intro">Polymer routing with onsenUI</a></li>
+<li><a href="#polymeronsen">Polymer and Onsen</a></li>
+<li><a href="#samples">Routing Samples</a></li>
+<li><a href="#integration">Onsen integration in Polymer</a></li>
+</ul>
+<h2 id="intro">Onsen Routing with polymer</h2>
+<h3 id="polymeronsen">1. Polymer and Onsen</h3>
+<p>Polymer is a thin layer over on top of web components trying to facilitate the use of the new standards. In addition it includes a data binding framework for connecting model and views as well as different components. It is the base for application frameworks or with emerging web componnets, it can be seen as a web framework by its own.    </p>
+<p>Onsen is a mobile application framework based on web components. The main feature of mobile frameworks are customized routings and overlays, customized gestures as required for quick navigation on small devices. Onsen provides binding to some application frameworks out of the box, but allows the definition to further frameworks by users.  </p>
+<p>Since Onsen UI and Polymer are both based on web components, it is possible to co use the frameworks, and making mobile elements available or leveraging polymer or polymer pages.  </p>
+<p>Short listing of Onsen UI and Polymer features.  </p>
+<p>Onsen provides:  </p>
+<ul>
+<li>global routing elements (splitter navigation)</li>
+<li>global dialog elements (dialog)</li>
+<li>global application pages as templates</li>
+<li>gesture events</li>
+<li>some further io elements as web components (without shadow dom)</li>
+<li>page life cycle</li>
+<li>no data binding</li>
+<li>explicit bindings to application frameworks, (some out of the box)</li>
+</ul>
+<p>Polymer provides:  </p>
+<ul>
+<li>a wrapper for for the web component standard
+     (shadow dom, templates, custom elements, includes)</li>
+<li>data binding system tobe used within and between components</li>
+<li>observer pattern</li>
+<li>component life cycle</li>
+<li>rich and growing set of web components (www.webcomponents.org)
+     (normally using shadow don and data binding)</li>
+<li>event system</li>
+<li>shadow dom styling</li>
+<li>complete toolbox</li>
+<li>support for progressive web apps</li>
+</ul>
+<p>The approach of mixing polymer and onsen is to use the onsen elements for dialogs, routing, and the definition of pages. Polymer is used to define the content of pages. On the other hand no routing and dialogs are done by polymer elements and no content is displayed by Osen elements. This is not really a big loss, since a mobile specific routing does not exist otherwise as a polymer component, and the polymer framework and elements are much richer for displaying content than onsen elements.  </p>
+<h3 id="samples">2. Routing Samples</h3>
+<p>Onsen elements are DOM elements, and thus available in the global Name Space. Polymer elements are located in the shadow do of an encapsulating element, unless the element is instantiated in the global DOM itsself.   </p>
+<p>In the following samples Polymer pages are defined as polymer elements. Onsen Pages and
+Routing and Dialog elements are defined in the DOM and global namespace. The content of an Onsen page is an instantiated Polymer element of a polymer page.  </p>
+<pre><code>  DOM   &lt;--  Onsen Router
+  DOM   &lt;--  Onsen Dialog
+  DOM   &lt;--  Onsen Page &lt;-- Instantiated Polymer page element
+  Polymer Page Element &lt;--  Local DOM  &lt;-- further Polymer elements (Page content)
+</code></pre>
+<p><strong>This approach avoids mixing polymer and Onsen libraries</strong> due to minor but existing incompatibilities. As stated this is not really required. The onsen library is included in the starting page defining all Onsen elements and instantiating polymer page elements,
+Polymer libs are used for the definition of polymer elements.    </p>
+<p>For this purpose the use of onsen routing and dialog elements with polymer content is demonstrated in the following sample templates:  </p>
+<p>The samples in ons-intro have the following structure:  </p>
+<pre><code>ons-intro:   
+| -   bower_components   ----   used bower components
+| -   demo               ----   demo helper for generation of sample content
+| -   src
+| -      html            ----     polymer page elements (from poly-intro)
+| -   ons-poly-appnav-one-page1.html    ----   sample ons Router
+| -   ons-poly-appnav-carousel.html     ----   sample ons Router
+|     ....
+
+ons-poly-appnav-one-pageX: display one polymer page
+ons-poly-apptab:           onsen tabbar router using polymer pages  
+ons-poly-appsplitter:      onsen sidebar router using polymer pages
+ons-poly-appnav:           onsen navigator using polymer pages
+ons-poly-dialog:           onsen dialog using polymer pages and elements
+ons-poly-carousel:         onsen carousel using polymer pages
+</code></pre>
+<h3 id="integration">3. Ons integration in Polymer</h3>

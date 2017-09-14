@@ -1,0 +1,21 @@
+{
+  "name": "videoplayer",
+  "version": "1.0.0",
+  "description": "persona video player",
+  "main": "app.js",
+  "scripts": {
+    "test": "jasmine"
+  },
+  "keywords": [
+    "polymer",
+    "webcomponents",
+    "html"
+  ],
+  "author": "albert kos",
+  "license": "ISC",
+  "dependencies": {
+    "autobahn": "^0.11.2",
+    "cfenv": "1.0.x",
+    "express": "^4.13.4"
+  }
+}

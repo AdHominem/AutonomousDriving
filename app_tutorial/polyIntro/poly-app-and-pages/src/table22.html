@@ -1,0 +1,52 @@
+<!--
+/* Continental Automotive AG, foss@continental-corporation.com 
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */ 
+ -->
+
+<!doctype html>
+
+<html>
+  <head>
+    <title>poly-app</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="import" href="../bower_components/polymer/polymer-element.html">
+    <link rel="import" href="./wamp-data-provider.html">
+    <link rel="import" href="./list-view2.html">
+  </head>
+  <body>
+
+    <dom-module id="table22-element">
+      <template>
+         <style>
+           :host {        
+             display: block;
+             width:32vw;
+             height:40vh;
+           }
+           list-view2 {
+             height:100%;
+             width:100%;
+
+           }
+        </style>
+       <conticloud-vehicledata wampip="192.168.40.115" serviceip="{{sip}}" out1="{{messages}}">  </conticloud-vehicledata>
+       <list-view2 serviceip="{{sip}}" in1="{{messages}}"> </list-view2>
+     </template>
+   </dom-module>
+  
+   <script>
+     class Page22 extends Polymer.Element {
+      static get is() { return "table22-element"; }
+      constructor() {
+            super();
+      }
+    }
+    customElements.define(Page22.is, Page22);
+  
+</script>
+ <table22-element> </table22-element>
+</body>
+</html>

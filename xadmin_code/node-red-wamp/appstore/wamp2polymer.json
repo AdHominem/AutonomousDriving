@@ -1,0 +1,16 @@
+{
+  "name": "Wamp2Polymer",
+  "appType": "nodejs",
+  "description": "Web Component View Example",
+  "author": {
+    "company": "Continental Automotive GmbH",
+    "email": "foss@continental-corporation.com"
+  },
+  "wamp": {
+    "base": "conti.wamp2polymer.",
+    "realm": "realm1",
+    "topics": [
+      "persona"
+    ]
+  }
+}

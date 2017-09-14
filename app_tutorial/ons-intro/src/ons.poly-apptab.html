@@ -1,0 +1,140 @@
+<!--
+/* Continental Automotive AG, foss@continental-corporation.com 
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */ 
+ -->
+
+<html>
+  <head>
+
+  <link rel="import" href="./html/poly-page2-element.html">
+  <link rel="import" href="./html/poly-page1-element.html">
+  <link rel="stylesheet" href="../bower_components/OnsenUI-dist-2.5.0/css/onsenui.css">
+  <link rel="stylesheet" href="../bower_components/OnsenUI-dist-2.5.0/css/onsen-css-components.css">
+  <script src="../bower_components/OnsenUI-dist-2.5.0/js/onsenui.js"></script>
+
+		<style type="text/css">
+			body {
+				height: 100%;
+				margin: 0;
+				font-family: sans-serif;
+				background-color: #DDD;
+			}
+			
+			#content, .announcement {
+				max-width: 790px;
+				background-color: #FFF;
+				padding: 1em;
+				margin: 0 auto;
+				box-shadow: 0 0 50px rgba(0, 0, 0, 0.2);
+			}
+			
+			.announcement {
+				margin: 1em auto;
+				border: 2px solid #0A0;
+			}
+			
+			h2 {
+				font-size: 1.8em;
+				margin: 1.5em 0 0.5em -2px;
+				font-weight: bold;
+				padding: .2em .5em;
+				background: #edeeef;
+				border-right: 1px solid #ccc;
+				border-bottom: 1px solid #ccc;
+				color: #fff;
+				background-color: #b0de5c;
+				background-image: -moz-linear-gradient(top, #b0de5c, #82cb00);
+				background-image: -o-linear-gradient(top, #b0de5c, #82cb00);
+				background-image: -webkit-gradient(linear, left top, left bottom, from(#b0de5c), to(#82cb00));
+				background-image: -webkit-linear-gradient(top, #b0de5c, #82cb00);
+				background-image: linear-gradient(top, #b0de5c, #82cb00);
+				filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#b0de5c', EndColorStr='#82cb00');
+				border-radius: 5px;
+				text-shadow: 0 -1px 1px rgba(0,0,0,0.35);
+				box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.2);
+			}
+			.nav {
+				color: #000;
+				text-decoration: none;
+				border-bottom: 1px dashed #000;
+				display: inline-block;
+				padding: 3px;
+			}
+			.nav:hover {
+				background-color: #DDF;
+			}
+			
+			leaflet-map,
+			geolocation-sample {
+				max-width: 20em;
+				height: 20em;
+				border: 1px solid #aaa;
+			}
+			geolocation-sample {
+				height: 21em;
+			}
+			pre {
+				font-size: large;
+				padding: 0.5em 1em;
+				background-color: #DDD;
+				clear: all;
+			}
+			.i {
+				color: #00D
+			}
+			.a {
+				color: #008;
+			}
+			.v {
+				color: #800;
+			}
+			.c {
+				color: #080;
+			}
+		</style>
+  </head>
+
+<body>
+
+ <script>
+         var i=0;
+         var j=7;
+         const app={};
+         var t1, t2;
+      
+      document.addEventListener('init', function(event) {
+      var page = event.target;
+      if (page.id==="p1") {
+       }
+       if (page.id==="p2") {
+       }
+      });
+
+      ons.ready(function() {
+      });
+
+</script>
+
+<ons-tabbar>
+  <ons-tab label="Tab 1" page="tab1.html" active>
+  </ons-tab>
+  <ons-tab label="Tab 2" page="tab2.html">
+  </ons-tab>
+</ons-tabbar>
+
+<template id="tab1.html">
+<ons-page id="p1">
+    <poly-page1> </poly-page1>  
+ </ons-page>
+</template>
+
+<template id="tab2.html">
+ <ons-page id="p2">
+     <poly-page2> </poly-page2>  
+  </ons-page>
+</template>
+  </body>
+</html>
+

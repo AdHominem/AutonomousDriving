@@ -1,0 +1,19 @@
+{
+  "name": "ledworkervisu",
+  "version": "1.0.0",
+  "description": "show all data comming from obdworker(red) wamp2polymer(green) Video Player(blue) with led patterns. slow wipe = low datarate | fast wipe => middle datarate | blinking => high datarate",
+  "main": "ledapp.js",
+  "scripts": {
+    "test": "jasmine"
+  },
+  "keywords": [
+    "led",
+    "visualization",
+    "obd",
+    "wamp",
+    "video",
+    "player"
+  ],
+  "author": "Continental Automotive GmbH",
+  "license": "MPL-2.0"
+}

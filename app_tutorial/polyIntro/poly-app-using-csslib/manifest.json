@@ -1,0 +1,7 @@
+{
+  "name": "poly-app-from-element-csslib",
+  "short_name": "poly-app-from-element-csslib",
+  "description": "poly-app-from-element-csslib",
+  "start_url": "src/bootstrap.html",
+  "display": "standalone"
+}

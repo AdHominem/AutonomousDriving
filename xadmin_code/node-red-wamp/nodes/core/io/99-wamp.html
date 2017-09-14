@@ -1,0 +1,232 @@
+<!--
+/**
+ * Copyright 2015 IBM Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ **/
+-->
+<style>
+  html.node {
+    color: orangered;
+  }
+</style>
+<script data-template-name="wamp in" type="text/x-red">
+
+  <div class="form-row">
+    <label for="node-input-value">
+      <i class="fa fa-tag"></i>
+      <span>Status</span>
+    </label>
+    <input disabled id="node-input-value" type="text">
+  </div>
+  <div class="form-row">
+    <label for="node-input-app">
+      <i class="fa fa-globe"></i>Apps</label>
+    <select id="node-input-app">
+      <option disabled value=""></option>
+    </select>
+  </div>
+  <div class="form-row">
+    <label for="node-input-topic">
+      <i class="fa fa-tasks"></i>
+      <span data-i18n="common.label.topic"></span>
+    </label>
+    <select id="node-input-topic">
+      <option disabled value=""></option>
+    </select>
+  </div>
+  <div class="form-tips">
+    <span data-i18n="wamp.tip">Select the App and Topic to subscribe</span>
+  </div>
+</script>
+
+<script data-help-name="wamp in" type="text/x-red">
+  <p>WAMP input node.</p>
+  <p>Lets you pick an App and listens for a sub, when detected it then calls an rpc function in the wamp_rpc function node</p>
+</script>
+
+<script type="text/javascript">
+  RED
+    .nodes
+    .registerType('wamp in', {
+      category: 'input',
+      defaults: {
+        app: {
+          required: true
+        },
+        topic: {
+          value: "",
+          required: true
+        },
+        value: {
+          value: "Loading Data..."
+        },
+        base: {
+          value: ""
+        }
+      },
+      color: "orange",
+      inputs: 0, //set to 1 so we can connect an Inject to test
+      outputs: 1,
+      icon: "contiLogo.png",
+      label: function() {
+        return this.topic || "wamp in";
+      },
+      labelStyle: function () {
+          return "node_label_conti";
+        //return this.name ? "node_label_italic" : "";
+      },
+      oneditprepare: oneditprepare,
+      oneditsave: oneditsave,
+      oneditcancel: oneditcancel
+    });
+
+  function oneditcancel(){
+    this.base = this.oldBase;
+  }
+
+  function oneditsave() {
+    var base = $("#node-input-app").find(':selected').attr('base');
+    this.base = base || this.base;
+  }
+
+  function oneditprepare() {
+    var node = this;
+
+    var appSelect = $('#node-input-app');
+    var topic = $('#node-input-topic');
+    var value = $('#node-input-value');
+
+    node.oldBase = node.base;
+
+    // Disable both input fields as long as no data available
+    appSelect.prop('disabled', 'disabled');
+    topic.prop('disabled', 'disabled');
+
+    $.getJSON('apps', function(data) {
+
+      //get the list of apps to display in the select options
+      //appSelect.options.length = 0;
+
+      var last = appSelect.children()
+        .last();
+      var opts = [];
+
+      if (data.length > 0) {
+        value.val("Retrieved " + data.length + " Apps");
+      }
+
+      for (var i = 0; i < data.length; i++) {
+        var selected = node.app == data[i].name; //should set pre-selected as selected
+        node.base = data[i].base;
+
+        opts.push('<option base="' + data[i].base + '" value="' + data[i].name + '"' + (selected ? " selected" : "") + '>' + data[i].name + '</option>');
+      }
+
+      last.before(opts.join(""));
+
+      appSelect.prop('disabled', false);
+      appSelect.change();
+
+    });
+
+    // Set right base after topic is also set
+    topic.change(function() {
+
+      node.base = $("#node-input-app").find(':selected').attr('base');
+
+    });
+
+    //invoked when the user changes the selection of the app select option
+    appSelect.change(function() {
+
+      var selectedApp = $('#node-input-app').val() || "";
+
+      var topic = $('#node-input-topic');
+      var value = $('#node-input-value');
+
+      topic.prop('disabled', 'disabled');
+      // Looking for the topics when a app is selected.
+      if (selectedApp.length > 0) {
+        //this will call the Admin /topics method inside the .js file passing the Index of the selected App
+        $
+          .getJSON('topics/' + selectedApp, function(data) {
+            //if data has some data then insert it into the node-input-topic select options
+            //data.length = 4 (temperature,humidity,gyro,light)
+            var topicSelect = $('#node-input-topic');
+
+            topicSelect.find('option')
+              .remove()
+              .end()
+              .append("<option value=\"\" disabled></option>");
+
+            var opts = [];
+
+            for (var i = 0; i < data.length; i++) {
+              var selected = node.topic == data[i].name; //should set pre-selected as selected
+              opts.push('<option value="' + data[i].name + '"' + (selected ? " selected" : "") + '>' + data[i].name + '</option>');
+            }
+            topicSelect.find('option')
+              .remove()
+              .end()
+              .append(opts.join(""));
+
+            topic.prop('disabled', false);
+          });
+      }
+
+    });
+  };
+</script>
+
+<script data-template-name="wamp out" type="text/x-red">
+  <div class="form-row">
+    <label for="node-input-topic">
+      <i class="fa fa-tasks"></i>
+      <span data-i18n="common.label.topic"></span>
+    </label>
+    <input data-i18n="[placeholder]common.label.topic" id="node-input-topic" type="text">
+  </div>
+  <div class="form-tips">
+    <span data-i18n="wamp.tip">This will contain the value we shall Publish() to</span>
+  </div>
+</script>
+
+<script data-help-name="wamp out" type="text/x-red">
+  <p>Connect to WAMP router and publishes something. This can then be picked up by an external web app that is listening on a sub()</p>
+</script>
+
+<script type="text/javascript">
+  RED
+    .nodes
+    .registerType('wamp out', {
+      category: 'output',
+      defaults: {
+        topic: {
+          value: ""
+        }
+      },
+      color: "orange",
+      inputs: 1,
+      outputs: 0, //set to 1 so we can connect a debug for testing
+      icon: "bridge.png",
+      align: "right",
+      label: function() {
+        return this.topic || "wamp out";
+      },
+      labelStyle: function () {
+          return "node_label_conti";
+        //return this.name ? "node_label_italic" : "";
+      }
+    });
+</script>

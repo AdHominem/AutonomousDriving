@@ -1,0 +1,97 @@
+<!--Continental Automotive AG, foss@continental-corporation.com  
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+<!--***Example on how to make Polymer 2.0 Element************************************************************** 
+As a User I want to see all Data coming from OBD Worker. Topic Name and current Value should be visualized 
+in a browser window. Furthermor I want to:
+- choose the mp4 file that is played by the Persona Video Worker
+- choose the KML File that is replayed by OBD Worker
+***************************************************************************************************************-->
+
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/polymer/lib/elements/dom-repeat.html">
+<!-- component definition -->
+<dom-module id="conticloud-vehicledata">
+    <template>
+        <link rel="stylesheet" href="mycomponents/materialize.min.css">
+        <h3>  Service Router IP {{serviceip}}</h3>
+        <table class="striped">
+            <thead>
+                <tr>
+                    <th data-field="signalname">Signalname</th>
+                    <th data-field="value">Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <template is="dom-repeat" id="menu" items="{{messages}}">
+                    <tr>
+                        <td id="signalname">{{item.signalname}} </td>
+                        <td id="value">{{item.value}}</td>
+                    </tr>
+                </template>
+            </tbody>
+        </table>
+    </template>
+</dom-module>
+<script src="autobahn.min.js"></script>
+<script>
+    //must be global because this.obd_callback.arguments list cannot be accessed in strict mode 
+    //(topicname would not be available)
+    var vehicle_data = new Map();
+    var obd_callback = function(arg) {
+        vehicle_data.set(obd_callback.arguments[2].topic, arg[0]);
+    }
+    class cContiVehicleData extends Polymer.Element {
+        constructor() {
+            super();
+            if(typeof(this.attributes.wampip) !== 'undefined') {
+                this.serviceip = this.attributes.wampip.value
+            }
+            else {
+                this.serviceip = location.hostname
+            }
+            this.wamp_connect(this.serviceip);
+            setInterval(function () {
+                var loc_vehicleArray = [];
+                var loc_index = 0;
+                var loc_this = this;
+                this.messages = [];
+                vehicle_data.forEach(function (arg_value, arg_key) {
+                    var loc_current = {};
+                    loc_current.signalname = arg_key;
+                    loc_current.value = arg_value;
+                    loc_vehicleArray[loc_index] = loc_current;
+                    loc_index += 1;
+                    loc_this.push('messages', loc_current);
+                })
+            }.bind(this), 900)
+        }
+        wamp_connect(arg) {
+            this.wampConnection = new autobahn.Connection({
+                url: 'ws://' + arg + ':8080/ws',
+                realm: "realm1",
+                authextra: {service_name: 'html-worker'}
+            });
+            this.wampConnection.open();
+            this.wampConnection.onopen = function (session) {
+                this.current_session = session 
+                console.log("Connection html-worker session open");
+                session.subscribe("conti.obdserver", obd_callback, { match: "prefix" }).then(
+                    function (sub) {
+                        console.log("subscribed to prefix: conti.obdserver");
+                    },
+                    function (err) {
+                        console.log("failed to subscribe: conti.obdserver ->" + err);
+                    });
+            }.bind(this);
+        }
+        wamp_session() {
+            console.log("get current wamp session");
+            return this.current_session;
+        }
+        static get is() { return "conticloud-vehicledata"; }
+    }
+    customElements.define(cContiVehicleData.is, cContiVehicleData);
+</script>

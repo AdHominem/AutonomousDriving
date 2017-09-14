@@ -1,0 +1,175 @@
+[
+    {
+        "id": "13c4b0c3.52c96f",
+        "type": "wamp in",
+        "z": "683cbba1.5e5994",
+        "app": "OBD Worker",
+        "topic": "coordinates",
+        "value": "Retrieved 4 Apps",
+        "base": "conti.obdserver.",
+        "x": 296,
+        "y": 400.80003452301025,
+        "wires": [
+            [
+                "22dbdca9.897f24"
+            ]
+        ]
+    },
+    {
+        "id": "f21b7b6.15af988",
+        "type": "wamp in",
+        "z": "683cbba1.5e5994",
+        "app": "OBD Worker",
+        "topic": "speed",
+        "value": "Retrieved 4 Apps",
+        "base": "conti.obdserver.",
+        "x": 274.9000015258789,
+        "y": 449.00001525878906,
+        "wires": [
+            [
+                "22dbdca9.897f24"
+            ]
+        ]
+    },
+    {
+        "id": "231619b3.246086",
+        "type": "wamp in",
+        "z": "683cbba1.5e5994",
+        "app": "OBD Worker",
+        "topic": "time",
+        "value": "Retrieved 4 Apps",
+        "base": "conti.obdserver.",
+        "x": 275.8999900817871,
+        "y": 500.0000171661377,
+        "wires": [
+            [
+                "22dbdca9.897f24"
+            ]
+        ]
+    },
+    {
+        "id": "585af578.3e9e7c",
+        "type": "wamp out",
+        "z": "683cbba1.5e5994",
+        "topic": "conti.videoplayer.time",
+        "x": 595.3999862670898,
+        "y": 257.6000061035156,
+        "wires": []
+    },
+    {
+        "id": "446d2021.68b79",
+        "type": "inject",
+        "z": "683cbba1.5e5994",
+        "name": "",
+        "topic": "",
+        "payload": "1",
+        "payloadType": "num",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 277,
+        "y": 195.80003309249878,
+        "wires": [
+            [
+                "585af578.3e9e7c"
+            ]
+        ]
+    },
+    {
+        "id": "22dbdca9.897f24",
+        "type": "debug",
+        "z": "683cbba1.5e5994",
+        "name": "",
+        "active": true,
+        "console": "false",
+        "complete": "true",
+        "x": 578.0000228881836,
+        "y": 444.60003662109375,
+        "wires": []
+    },
+    {
+        "id": "c72449d1.9aa878",
+        "type": "inject",
+        "z": "683cbba1.5e5994",
+        "name": "",
+        "topic": "",
+        "payload": "2",
+        "payloadType": "num",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 276.8999900817871,
+        "y": 250.00001001358032,
+        "wires": [
+            [
+                "585af578.3e9e7c"
+            ]
+        ]
+    },
+    {
+        "id": "6bd19995.b98748",
+        "type": "inject",
+        "z": "683cbba1.5e5994",
+        "name": "",
+        "topic": "",
+        "payload": "3",
+        "payloadType": "num",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 274.8999900817871,
+        "y": 295.0000114440918,
+        "wires": [
+            [
+                "585af578.3e9e7c"
+            ]
+        ]
+    },
+    {
+        "id": "7e2659c6.422068",
+        "type": "inject",
+        "z": "683cbba1.5e5994",
+        "name": "",
+        "topic": "",
+        "payload": "0",
+        "payloadType": "num",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 276.89998626708984,
+        "y": 132,
+        "wires": [
+            [
+                "585af578.3e9e7c"
+            ]
+        ]
+    },
+    {
+        "id": "d2b4e957.e3f3b8",
+        "type": "wamp out",
+        "z": "683cbba1.5e5994",
+        "topic": "conti.wamp2polymer.persona",
+        "x": 670.5,
+        "y": 67.5999984741211,
+        "wires": []
+    },
+    {
+        "id": "d639d16c.12d3c",
+        "type": "inject",
+        "z": "683cbba1.5e5994",
+        "name": "",
+        "topic": "",
+        "payload": "persona_4",
+        "payloadType": "str",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 257.1000061035156,
+        "y": 49.80000305175781,
+        "wires": [
+            [
+                "d2b4e957.e3f3b8"
+            ]
+        ]
+    }
+]

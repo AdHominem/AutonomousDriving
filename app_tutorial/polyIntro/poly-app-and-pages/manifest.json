@@ -1,0 +1,7 @@
+{
+  "name": "poly-app-from-element",
+  "short_name": "poly-app-from-element",
+  "description": "poly-app-from-element",
+  "start_url": "src/index1.html",
+  "display": "standalone"
+}

@@ -1,0 +1,55 @@
+<!--Continental Automotive AG, foss@continental-corporation.com  
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+<!--***Example on how to make Polymer 2.0 Element************************************************************** 
+As a User I want to see all Data coming from OBD Worker. Topic Name and current Value should be visualized 
+in a browser window. Furthermor I want to:
+- choose the mp4 file that is played by the Persona Video Worker
+- choose the KML File that is replayed by OBD Worker
+***************************************************************************************************************-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Vehicle Data</title>
+    <script src="https://polygit.org/components/webcomponentsjs/webcomponents-loader.js"></script>
+    <link rel="import" href="mycomponents/conticloud.html">
+</head>
+
+<body>
+    <select onchange="sendpersona(this.value)" id="persona">
+    <option value="dummy">Select Persona</option>
+    <option value="persona_1">Persona 1</option>    
+    <option value="persona_2">Persona 2</option>
+    <option value="persona_3">Persona 3</option>
+    <option value="persona_4">Persona 4</option>
+</select>
+    <conticloud-vehicledata id="vehicle" wampip="127.0.0.1" />
+    <script>
+        function sendpersona(arg) {
+            var personaValidation = new RegExp("^persona_[1-4]");
+            if (personaValidation.test(arg)) {
+                var loc_vehicle = document.getElementById("vehicle");
+                var loc_session = loc_vehicle.wamp_session();
+                //WORKER: VIDEO PLAYER
+                //call a remote procedure of video player
+                loc_session.call('conti.videoplayer.source', [arg]).then(
+                    function (res) {
+                        console.log("Result:", res);
+                    }
+                );
+                //WORKER: OBD WORKER
+                //all OBD Worker are listening to this topic for Vehicle Data Playback 
+                var loc_wamp = {};
+                loc_wamp.payload = arg;
+                loc_wamp.topic = "persona"
+                loc_session.publish("conti.wamp2polymer.persona", [loc_wamp])
+            } else {
+                console.log("wrong persona input")
+            }
+        }
+    </script>
+</body>
+</html

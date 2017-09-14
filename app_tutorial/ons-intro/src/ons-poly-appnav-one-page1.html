@@ -1,0 +1,65 @@
+<!--
+/* Continental Automotive AG, foss@continental-corporation.com 
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */ 
+ -->
+
+
+<!doctype html>
+
+<html>
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+
+  <title>paper-dialog demo</title>
+    
+   <link rel="import" href="./html/poly-page1-element.html">
+ 
+  <link rel="stylesheet" href="../bower_components/OnsenUI-dist-2.5.0/css/onsenui.css">
+  <link rel="stylesheet" href="../bower_components/OnsenUI-dist-2.5.0/css/onsen-css-components.css">
+
+  <script src="../bower_components/OnsenUI-dist-2.5.0/js/onsenui.js"></script>
+
+</head>
+
+<body unresolved class="centered">
+
+<ons-navigator id="myNavigator" page="hello.html"></ons-navigator>
+
+<template id="hello.html">
+<ons-page id="helloworld">
+   <ons-toolbar> 
+      <div class="left">
+        <ons-toolbar-button onclick="fn.open()">
+          <ons-icon icon="md-menu"></ons-icon>
+        </ons-toolbar-button>
+      </div>
+      <div class="center">
+        Main
+      </div>    
+    </ons-toolbar>
+    
+         <poly-page1>  </poly-page1>    
+   </ons-page>
+</template>
+
+<script>
+  
+  ons.ready(function() {
+     console.log("ONS READY");
+  });
+       
+  document.addEventListener("DOMContentLoaded", function(event) {
+         console.log("DOMContentLoaded DOM parsed 2");
+  });
+
+  </script>
+
+</body>
+
+</html>

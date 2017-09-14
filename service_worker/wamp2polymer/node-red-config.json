@@ -1,0 +1,30 @@
+[
+    {
+        "id": "4a5db7a1.62f688",
+        "type": "wamp in",
+        "z": "3432302d.a459e",
+        "app": "Wamp2Polymer",
+        "topic": "persona",
+        "value": "Retrieved 4 Apps",
+        "base": "conti.wamp2polymer.",
+        "x": 188.10000610351562,
+        "y": 155.80000495910645,
+        "wires": [
+            [
+                "edb7378.9dfb6c8"
+            ]
+        ]
+    },
+    {
+        "id": "edb7378.9dfb6c8",
+        "type": "debug",
+        "z": "3432302d.a459e",
+        "name": "",
+        "active": true,
+        "console": "false",
+        "complete": "true",
+        "x": 427.10003662109375,
+        "y": 155.60000610351562,
+        "wires": []
+    }
+]

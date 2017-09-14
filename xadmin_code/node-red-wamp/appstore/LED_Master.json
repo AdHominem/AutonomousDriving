@@ -1,0 +1,64 @@
+{
+  "name": "LED Master",
+  "appType": "nodejs",
+  "description": "smart city lights",
+  "author": {
+    "company": "Continental Automotive GmbH",
+    "email": "foss@continental-corporation.com"
+  },
+  "wamp": {
+    "base": "conti.smartcity.",
+    "realm": "realm1",
+    "topics": [
+      "status"
+    ],
+    "RPC": [
+      {
+        "name": "redWipe",
+        "description": "red wipe",
+        "parameters": [ ]
+      },
+      {
+        "name": "blueWipe",
+        "description": "blue wipe",
+        "parameters": [ ]
+      },
+      {
+        "name": "greenWipe",
+        "description": "green wipe",
+        "parameters": [ ]
+      },
+      {
+        "name": "customcolor",
+        "description": "custom wipe",
+        "parameters": [
+          {
+            "name": "color",
+            "type": "array",
+            "description": "Red<int>, green<int>, blue<int>"
+          }
+         ]
+      },
+      {
+        "name": "workerVisualization",
+        "description": "show activity of Worker",
+        "parameters": [
+          {
+            "name": "worker_1",
+            "type": "string",
+            "description": "off slow mid fast"
+          },
+          {
+            "name": "worker_2",
+            "type": "string",
+            "description": "off slow mid fast"          },
+          {
+            "name": "worker_3",
+            "type": "string",
+            "description": "off slow mid fast"
+          }
+         ]
+      }
+    ]
+  }
+}

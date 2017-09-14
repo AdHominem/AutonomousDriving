@@ -1,0 +1,20 @@
+{
+  "name": "mywebcomponents",
+  "version": "1.0.0",
+  "description": "a own polymer component",
+  "main": "app.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [
+    "polymer",
+    "webcomponents",
+    "html"
+  ],
+  "author": "albert kos",
+  "license": "ISC",
+  "dependencies": {
+    "cfenv": "1.0.x",
+    "express": "^4.13.4"
+  }
+}

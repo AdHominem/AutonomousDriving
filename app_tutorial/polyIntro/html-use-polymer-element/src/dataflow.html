@@ -1,0 +1,54 @@
+<!--
+/* Continental Automotive AG, foss@continental-corporation.com 
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */ 
+ -->
+
+<!doctype html>
+<html>
+  <head>
+    <title>poly-app</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- link rel="manifest" href="/manifest.json"  -->
+     <link rel="import" href="../bower_components/polymer/lib/elements/dom-bind.html">
+     <link rel="import" href="/src/poly-multiply.html">
+  </head>
+  <body>
+
+  <h2>Example - Polymer multiplier with databinding in out element</h2> 
+  <h4> ============ Incoming data ===================</h4>  
+  
+  <h4 id="in1"></h2>
+
+  <h4>============  Outgoing data ===================</h4> 
+  <dom-bind id="dombinding">
+    <template>
+       <poly-multiply id="pelement" out1="{{sum}}"></poly-multiply>
+       <h4>out value in data binding: {{sum.value}}</h4>  
+    </template>
+  </dom-bind>
+
+  <script>
+    
+    document.addEventListener("DOMContentLoaded", function(event) {
+         console.log("DOM fully loaded and parsed");
+
+         var j=0;    
+         var in1= document.querySelector('#in1');
+         in1.innerHTML="in value of element set to: ";
+         var bound = document.querySelector('#dombinding');
+         var element = bound.$.pelement;      
+      
+         setInterval(() => {  
+            j++;
+            // set in value of polymer element
+            in1.innerHTML="in value of element set to: " + j;
+            element.in1= j;
+          }, 2000);
+    });  
+
+  </script>
+  </body>
+</html>

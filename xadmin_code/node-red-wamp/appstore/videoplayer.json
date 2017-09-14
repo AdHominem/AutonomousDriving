@@ -1,0 +1,29 @@
+{
+  "name": "Video Player",
+  "appType": "nodejs",
+  "description": "Play Persona Video",
+  "author": {
+    "company": "Continental Automotive GmbH",
+    "email": "foss@continental-corporation.com"
+  },
+  "wamp": {
+    "base": "conti.videoplayer.",
+    "realm": "realm1",
+    "topics": [
+      "time"
+    ],
+    "RPC": [
+      {
+        "name": "source",
+        "description": "select persona mp4 video",
+        "parameters": [
+          {
+            "name": "persona",
+            "type": "string",
+            "description": "persona: [persona_x]"
+          }
+         ]
+      }
+    ]
+  }
+}

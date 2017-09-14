@@ -1,0 +1,22 @@
+{
+  "name": "OBD Worker",
+  "appType": "nodejs",
+  "description": "vehicle data provider",
+  "author": {
+    "company": "Continental Automotive GmbH",
+    "email": "foss@continental-corporation.com"
+  },
+  "wamp": {
+    "base": "conti.obdserver.",
+    "realm": "realm1",
+    "topics": [
+      "coordinates",
+      "speed",
+      "time",
+      "speed__obd__km_h_",
+      "percentage_of_idle_driving___",
+      "percentage_of_city_driving___",
+      "percentage_of_highway_driving___"
+    ]
+  }
+}

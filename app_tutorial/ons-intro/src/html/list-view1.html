@@ -1,0 +1,99 @@
+<!doctype html>
+
+ <!--
+@license
+Copyright (c) 2016 Continental AG and subsidiaries,
+-->
+
+<!--
+/* Continental Automotive AG, foss@continental-corporation.com 
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */ 
+ -->
+
+<html>
+  <head>
+    <title>poly-app</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+    <link rel="import" href="../../bower_components/polymer/lib/elements/dom-bind.html">  
+    <link rel="import" href="../../bower_components/polymer/lib/elements/dom-repeat.html">  
+  </head>
+  <body>
+
+  <dom-module id="list-view1">
+    <template>
+      <style>
+        :host {
+           display: block;
+        }
+      </style>
+      <div>
+        <h3>  Service Router IP {{serviceip}}</h3>
+        <table class="striped">
+           <thead>
+            <tr>
+              <th data-field="signalname">Signalname</th>
+              <th data-field="value">Value</th>
+           </tr>
+        </thead>
+           <tbody>
+                <template is="dom-repeat" id="menu" items="{{in1}}">
+                    <tr>
+                        <td id="signalname">{{item.signalname}} </td>
+                        <td id="value">{{item.value}}</td>
+                    </tr>
+                </template>
+            </tbody>
+      </table>
+    </div>
+    </template>
+</dom-module>
+
+<script>
+(function() {
+   
+    class Wshow extends Polymer.Element {
+        static get is() { return 'list-view1'; }
+        static get properties() {
+        return {
+
+        /**
+             * forwarded value from wamp session
+             * @type Number
+        */
+          serviceip: {
+              type: Number,
+              value: 0,
+             //  observer: '_duplicate1'
+          },
+
+         /**
+             * forwarded value from wamp session
+             * @type Number
+          */
+        in1: {
+              type: Object,
+              value: {},
+            //    observer: '_duplicate2'
+            }
+          }
+        }
+        constructor() {
+            super();
+        }
+        _duplicate1 (in1) {
+          console.log("serviceip changed",in1);
+        }
+        _duplicate2 (in1) {
+           console.log("in changed",in1);
+        }
+     }
+     customElements.define(Wshow.is, Wshow);
+})();
+   
+</script>
+  </body>
+</html>

@@ -1,0 +1,60 @@
+<!--
+/* Continental Automotive AG, foss@continental-corporation.com 
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */ 
+ -->
+
+<!doctype html>
+
+<html>
+  <head>
+    <title>poly-app</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- link rel="manifest" href="/manifest.json"  -->
+     <link rel="import" href="../bower_components/polymer/lib/elements/dom-bind.html">
+     <link rel="import" href="/src/poly-multiply.html">
+  </head>
+  <body>
+
+  <h2>Example - Polymer multiplier emitting dom events</h2> 
+  <h4> ============ Incoming data ===================</h4>  
+  
+  <h4 id="in1"></h4>
+
+
+  <h4>============  Outgoing data ===================</h4> 
+  <poly-multiply id="multiply"></poly-multiply>
+  <h4 id="out1"></h4>
+
+  <script>
+    
+    document.addEventListener("DOMContentLoaded", function(event) {
+         console.log("DOM fully loaded and parsed");
+
+         var j=0;
+       
+         var in1= document.querySelector('#in1');
+         in1.innerHTML="in value of element set to: ";
+         var out1= document.querySelector('#out1');
+         out1.innerHTML="event out-changed received, value: ";
+         var element1 = document.querySelector('#multiply');
+       
+         // listen on out1 changed event of polymer element
+         element1.addEventListener('out1-changed', (e) => {
+               // write to DOM
+               out1.innerHTML="event out-changed received, payload: "+e.detail.value.value;
+         });
+
+         setInterval(() => {  
+              j++;
+              // set in value of polymer element
+              in1.innerHTML="in value of element set to: " + j;
+              element1.in1= j;
+        }, 2000);
+    });  
+
+  </script>
+  </body>
+</html>

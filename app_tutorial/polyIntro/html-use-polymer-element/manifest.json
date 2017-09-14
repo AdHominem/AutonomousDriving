@@ -1,0 +1,7 @@
+{
+  "name": "html-use-polymer-element",
+  "short_name": "html-use-polymer-element",
+  "description": "html-use-polymer-element",
+  "start_url": "src/index11.html",
+  "display": "standalone"
+}

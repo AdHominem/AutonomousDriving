@@ -1,0 +1,123 @@
+<!--
+/* Continental Automotive AG, foss@continental-corporation.com 
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */ 
+ -->
+
+<!doctype html>
+
+<html>
+  <head>
+    <title>poly-app</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="import" href="../bower_components/polymer/polymer.html">
+      <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+      <link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+      <link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
+      <link rel="import" href="../bower_components/paper-item/paper-item.html">
+      <link rel="import" href="../bower_components/paper-radio-button/paper-radio-button.html">
+      <link rel="import" href="../bower_components/paper-radio-group/paper-radio-group.html">
+      <link rel="import" href="../bower_components/paper-slider/paper-slider.html">
+  </head>
+<body>
+ <dom-bind id="db1">
+  <template>
+
+    <style is="custom-style">
+            paper-slider.red {
+              --paper-slider-knob-color: var(--paper-red-500);
+              --paper-slider-active-color: var(--paper-red-500);
+            }
+            paper-slider.green {
+               --paper-slider-knob-color: var(--paper-green-500);
+               --paper-slider-active-color: var(--paper-green-500);
+            }
+            paper-slider.blue {
+               --paper-slider-knob-color: var(--paper-light-blue-500);
+               --paper-slider-active-color: var(--paper-light-blue-500);
+            }
+            .swidth1 {
+              width: 600px;
+              overflow-x: hidden;
+            }
+            .swidth2 {
+              width: 300px;
+              overflow-x: hidden;
+              display:inline-flex;
+            }
+            .red1 {
+               color: red;
+            }
+            .center1 {
+               margin: auto;
+               width: 50%;
+            }
+    </style>
+
+  <h2> samples of input elements with data binding tp polymer element </h2> 
+  <h4> dropdown menue </h4>
+ 
+    <div>
+      <span>
+         <paper-dropdown-menu  class="swidth" label="Dinosaurs" selectedItem="{{sel}}" value="{{sel1}}">
+           <paper-listbox slot="dropdown-content" class="dropdown-content">
+             <paper-item>allosaurus</paper-item>
+             <paper-item>brontosaurus</paper-item>
+             <paper-item>carcharodontosaurus</paper-item>
+             <paper-item>diplodocus</paper-item>
+           </paper-listbox>
+         </paper-dropdown-menu>
+      </span>
+    </div>
+   
+  <h4> radio button </h4>
+    <div>
+      <span>
+        <paper-radio-button  class="swidth" checked="{{checked}}">Item label</paper-radio-button>
+      </span>
+    </div>
+
+  <h4> radio button group </h4> 
+    <div>
+      <span>
+        <paper-radio-group  class="swidth" selected="{{sel2}}">
+            <paper-radio-button name="small">Small</paper-radio-button>
+            <paper-radio-button name="medium">Medium</paper-radio-button>
+            <paper-radio-button name="large">Large</paper-radio-button>
+         </paper-radio-group>
+     </span>
+    </div>
+
+  <h4> slider </h4> 
+    <div>
+     <span>
+       R <paper-slider class="red swidth2" max="255" editable  value="{{s1}}"></paper-slider>
+      </span>
+    </div>
+    <div>
+     <span>
+       G 
+       <paper-slider class="green swidth2" max="255" editable value="{{s2}}"></paper-slider>
+      </span>
+    </div>
+    <div>
+      <span>
+        B 
+        <paper-slider class="blue swidth2" max="255" editable  value="{{s1}}"></paper-slider>
+      </span>
+    </div>
+
+<div class="center1">
+  <h4>Input Values (data bound) </h4> 
+  <p> dropdown menue: <span class="red1"> {{sel1}} </span> </p> 
+  <p> radio button: <span class="red1"> {{checked}} </span></p> 
+  <p> radio button group: <span class="red1"> {{sel2}} </span></p> 
+  <p> slider:<span class="red1"> {{s1}},{{s2}},{{s1}} </span></p> 
+</div>
+
+  </template>
+</dom-bind>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!--
+/* Continental Automotive AG, foss@continental-corporation.com 
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */ 
+ -->
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Navigator | Onsen UI</title>
+
+  <link rel="import" href="./html/poly-page2-element.html">
+  <link rel="import" href="./html/poly-page1-element.html">
+
+  <link rel="stylesheet" href="../bower_components/OnsenUI-dist-2.5.0/css/onsenui.css">
+  <link rel="stylesheet" href="../bower_components/OnsenUI-dist-2.5.0/css/onsen-css-components.css">
+  <script src="../bower_components/OnsenUI-dist-2.5.0/js/onsenui.js"></script>
+
+  <script>
+    document.addEventListener('init', function(event) {
+      console.log(event.target.id, 'init event');
+      if (event.target.id === 'page1') {
+        var title = event.target.data && event.target.data.title ? event.target.data.title : 'Custom Page';
+        event.target.querySelector('ons-toolbar div.center').textContent = title;
+      }
+    });
+    document.addEventListener('show', function(event) {
+      console.log(event.target.id, 'show event');
+    });
+    document.addEventListener('hide', function(event) {
+      console.log(event.target.id, 'hide event');
+    });
+    document.addEventListener('destroy', function(event) {
+      console.log(event.target.id, 'destroy event');
+    });
+
+
+    const app={};
+    document.addEventListener('init', function(event) {
+          var page = event.target;
+      });
+    ons.ready(function() {
+      });
+
+  </script>
+
+</head>
+
+<body>
+  
+ <ons-navigator id="myNavigator" page="page0.html"></ons-navigator>
+
+  <template id="page0.html">
+    <ons-page id="page0">
+    
+      <ons-toolbar>
+        <div class="center">Navigator</div>
+        <div class="right">
+            push
+            <span class="toolbar-button toolbar-button--outline"
+               onclick="myNavigator.pushPage('page1.html')">page1</span>
+            <span class="toolbar-button toolbar-button--outline"
+               onclick="myNavigator.pushPage('page2.html')">page2</span>
+        </div>
+      </ons-toolbar>
+          <h1> Startpage: Polymer with Onsen Routing </h1>
+   </ons-page>
+  </template>
+  
+  <template id="page1.html">
+    <ons-page id="page1">
+
+      <ons-toolbar>
+        <div class="left">
+            <span class="toolbar-button toolbar-button--outline"
+               onclick="myNavigator.popPage()">pop</span>
+        </div>
+        <div class="center">Page 1</div>
+        <div class="right">
+            push
+            <span class="toolbar-button toolbar-button--outline"
+               onclick="myNavigator.pushPage('page1.html')">page1</span>
+            <span class="toolbar-button toolbar-button--outline"
+               onclick="myNavigator.pushPage('page2.html')">page2</span>
+        </div>
+      </ons-toolbar>
+         <poly-page1> </poly-page1>
+    </ons-page>
+  </template>
+  
+  <template id="page2.html">
+    <ons-page id="page2">
+
+      <ons-toolbar>
+        <div class="left">
+            <span class="toolbar-button toolbar-button--outline"
+               onclick="myNavigator.popPage()">pop</span>
+        </div>
+        <div class="center">Page 2</div>
+        <div class="right">
+            push
+            <span class="toolbar-button toolbar-button--outline"
+               onclick="myNavigator.pushPage('page1.html')">page1</span>
+            <span class="toolbar-button toolbar-button--outline"
+               onclick="myNavigator.pushPage('page2.html')">page2</span>
+        </div>
+      </ons-toolbar>
+      <poly-page2> </poly-page2>
+
+    </ons-page>
+  </template>
+
+</body>
+</html>

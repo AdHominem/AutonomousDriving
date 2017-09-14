@@ -1,0 +1,107 @@
+<!--
+/* Continental Automotive AG, foss@continental-corporation.com 
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */ 
+ -->
+
+<html>
+<head>
+ <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+ <script src="../../bower_components/autobahn/autobahn.js"></script>
+</head>
+<body>
+<script>
+
+(function() {
+   //must be global because this.obd_callback.arguments list cannot be accessed in strict mode 
+    //(topicname would not be available)
+    var vehicle_data = new Map();
+    var obd_callback = function(arg) {
+        vehicle_data.set(obd_callback.arguments[2].topic, arg[0]);
+    }
+    
+    for (i=1; i < 40; i++) { 
+        vehicle_data.set("keyxxxxxxxxxx1xxxxxxxxx2xxxxxxxxx3xxxxxxxxx4xxxxxxxxxxxxxx5x"+i,i);   
+    }
+
+    class cContiVehicleData extends Polymer.Element {
+      //   static get is() { return 'conticloud-obdhmi'; }
+      static get is() { return "conticloud-vehicledata"; }
+        static get properties() {
+        return {
+          /**
+             * forwarded value from wamp session
+             * @type Number
+          */
+        serviceip: {
+              type: Number,
+              notify: true,
+              value: 0
+          },
+
+        
+        _messages: {
+              type: Object,
+              notify: true,
+              value: []
+            },
+          
+        out1: {
+              type: Array,
+              notify: true,
+              value: []
+            }
+          };
+        }
+
+        constructor() {
+            super();
+            this.serviceip = this.attributes.wampip.value;
+            // this.wamp_connect(this.serviceip);
+            var that=this;
+            var i=0;
+            var f1=function (arg_value, arg_key) {
+                  var current = {};
+                  current.signalname = arg_key;
+                  current.value = arg_value;
+                  that.push('_messages', current);
+             }
+
+            setInterval(function () {
+                that._messages = [];
+                i++;
+                vehicle_data.forEach(f1);
+                that.set('out1', that._messages)
+            }, 1000);
+            // console.log("wamp up")
+        }
+        wamp_connect(arg) {
+            this.wampConnection = new autobahn.Connection({
+                url: 'ws://' + arg + ':8080/ws',
+                realm: "realm1"
+            });
+            this.wampConnection.open();
+            this.wampConnection.onopen = function (session) {
+                this.current_session = session 
+                console.log("Connection OBDWorker session open");
+                session.subscribe("conti.obdserver", obd_callback, { match: "prefix" }).then(
+                    function (sub) {
+                        console.log("subscribed to prefix: conti.obdserver");
+                    },
+                    function (err) {
+                        console.log("failed to subscribe: conti.obdserver ->" + err);
+                    });
+            }.bind(this);
+        }
+        wamp_session() {
+            console.log("get current wamp session");
+            return this.current_session;
+        }
+    }
+    customElements.define(cContiVehicleData.is, cContiVehicleData);
+})();
+   
+</script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "name": "obd_worker",
+  "version": "1.0.0",
+  "description": "publish vehicle data to service router over wamp",
+  "main": "obdapp.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Continental Automotive GmbH",
+  "license": "Mozilla Public License v. 2.0.",
+  "dependencies": {
+    "autobahn": "^0.11.2",
+    "html-to-text": "^3.2.0",
+    "togeojson": "^0.16.0",
+    "xmldom": "^0.1.27"
+  }
+}

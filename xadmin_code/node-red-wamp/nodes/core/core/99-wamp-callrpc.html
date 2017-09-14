@@ -1,0 +1,341 @@
+<!--
+/**
+ * Copyright 2015 IBM Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ **/
+-->
+
+<script data-template-name="wamp rpc call" type="text/x-red">
+  <div class="form-row">
+    <label for="node-input-value">
+      <i class="fa fa-tag"></i>
+      <span>Status</span>
+    </label>
+    <input disabled="" id="node-input-value" type="text">
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-app">
+      <i class="fa fa-globe"></i>
+      <span>Apps</span>
+    </label>
+    <select id="node-input-app">
+      <option disabled value=""></option>
+    </select>
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-procedure">
+      <i class="fa fa-tasks"></i>
+      <span>Procedure</span>
+    </label>
+    <select id="node-input-procedure">
+      <option disabled value=""></option>
+    </select>
+  </div>
+
+  <div class="form-row" style="margin-bottom: 0px;">
+    <label for="node-input-func">
+      <i class="fa fa-wrench"></i>
+      <span data-i18n="function.label.function"></span>
+    </label>
+    <input autofocus="autofocus" id="node-input-func" type="hidden">
+    <input id="node-input-noerr" type="hidden">
+  </div>
+  <div class="form-row node-text-editor-row">
+    <div class="node-text-editor" id="node-input-func-editor" style="height: 250px;"></div>
+  </div>
+
+  <div class="form-tips">
+    <span data-i18n="wamp.tip">Call a RPC Method on the WAMP Server</span>
+  </div>
+</script>
+
+<script data-help-name="wamp rpc call" type="text/x-red">
+  <p>WAMP RPC Call function node.</p>
+  <p>Call a specific RPC call as retrieved from CloudantDB and passed to here in the msg object</p>
+</script>
+
+<script type="text/javascript">
+  RED.nodes.registerType('wamp rpc call', {
+    category: 'function',
+    defaults: {
+      value: {
+        value: "Loading Data"
+      },
+      app: {
+        required: true
+      },
+      procedure: {
+        required: true
+      },
+      base: {
+        value: ""
+      },
+      oldSelectedApp: {value: ""},
+      oldSelectedProcedure: {value: ""},
+      func: {
+        required: true
+      },
+      noerr: {
+        value: 0,
+        required: true,
+        validate: function(v) {
+          return ((!v) || (v === 0))
+            ? true
+            : false;
+        }
+      }
+    },
+    color: "orange",
+    inputs: 1,
+    outputs: 1,
+    icon: "white-globe.png",
+    label: function() {
+      return this.procedure || "wamp rpc call";
+    },
+    labelStyle: function () {
+        return "node_label_conti";
+        /*
+      return this.name
+        ? "node_label_white"
+        : "";*/
+    },
+    oneditprepare: oneditprepare,
+    oneditsave: oneditsave,
+    oneditcancel: oneditcancel
+  });
+
+  function oneditcancel() {
+
+    this.base = this.oldBase;
+
+  }
+
+  function oneditsave() {
+    var annot = this.editor.getSession().getAnnotations();
+    this.noerr = 0;
+    $("#node-input-noerr").val(0);
+    for (var k = 0; k < annot.length; k++) {
+      //console.log(annot[k].type,":",annot[k].text, "on line", annot[k].row);
+      if (annot[k].type === "error") {
+        $("#node-input-noerr").val(annot.length);
+        this.noerr = annot.length;
+      }
+    }
+    $("#node-input-func").val(this.editor.getValue());
+    delete this.editor;
+
+    var base = $("#node-input-app").find(':selected').attr('base');
+    this.base = base || this.base;
+
+    // Store actual selected values (for case user select another proc or app and pressed cancel)
+    this.oldSelectedApp = $('#node-input-app').val();
+    this.oldSelectedProcedure = $('#node-input-procedure').val();
+
+  }
+
+  function oneditprepare() {
+
+    var node = this;
+
+    var appSelect = $('#node-input-app');
+    var procedure = $('#node-input-procedure');
+    var value = $('#node-input-value');
+    var funcEditor = $('#node-input-func');
+    var tmpFunc = "";
+
+    // Save the selected base in case the user cancel / close the WAMP editor;
+    node.oldBase = node.base;
+
+    // Save the status whether this is the first time that the WAMP Node is opening
+    var firstStartOfEditor = true;
+
+    // Init Ace editor
+    this.editor = RED.editor.createEditor(
+            {id: 'node-input-func-editor',
+             mode: 'ace/mode/javascript',
+             value: $("#node-input-func").val()
+           });
+
+    // Disable both input fields as long as no data available
+    appSelect.prop('disabled', 'disabled');
+    procedure.prop('disabled', 'disabled');
+
+    $.getJSON('RPCApps', function(data) {
+
+      //get the list of apps to display in the select options
+      //appSelect.options.length = 0;
+
+      var last = appSelect.children().last();
+      var opts = [];
+
+      if (data.length > 0) {value.val("Retrieved " + data.length + " Apps");}
+
+      for (var i = 0; i < data.length; i++) {
+        var selected = node.app == data[i].name; //should set pre-selected as selected
+        node.base = data[i].base;
+
+        opts.push('<option base="' + data[i].base + '" value="' + data[i].name + '"' + (selected
+          ? " selected"
+          : "") + '>' + data[i].name + '</option>');
+      }
+
+      last.before(opts.join(""));
+
+      appSelect.prop('disabled', false);
+      appSelect.change();
+
+      if (node.editor.getValue().length == 0)
+        firstStartOfEditor = false;
+      }
+
+    );
+
+    //invoked when the user changes the selection of the app select option
+
+    appSelect.change(function() {
+
+      var selectedApp = $('#node-input-app').val() || "";
+      var funcTextLength = node.editor.getValue().length;
+
+      procedure.prop('disabled', 'disabled');
+
+      if (selectedApp.length > 0) {
+
+        if (funcTextLength > 0 && !firstStartOfEditor) {
+
+          // If user pressed cancel, so don´t fetch the data - just return and set values back to the old status
+          if (confirm("Are you sure? This will delete your already written code.") == false) {
+
+            // If cancel pressed, so set the values back to old values
+
+            $('#node-input-app').val(node.oldSelectedApp);
+            $('#node-input-procedure').val(node.oldSelectedProcedure);
+            procedure.prop('disabled', false);
+            node.base = node.oldBase;
+
+            return
+
+          } else {
+            node.editor.setValue("");
+          }
+
+        }
+
+        tmpFunc = node.editor.getValue();
+        node.editor.setValue("");
+
+        $.getJSON('procedures/' + selectedApp, function(data) {
+
+          //if data has some data then insert it into the node-input-topic select options
+
+          var procedureSelect = $('#node-input-procedure');
+
+          procedureSelect.find('option').remove().end().append("<option value=\"\" disabled></option>");
+
+          var opts = [];
+
+          for (var i = 0; i < data.length; i++) {
+            var selected = node.procedure == data[i].name; //should set pre-selected as selected
+            opts.push('<option value="' + data[i].name + '"' + (selected
+              ? " selected"
+              : "") + '>' + data[i].name + '</option>');
+          }
+          procedureSelect.find('option').remove().end().append(opts.join(""));
+
+          procedure.prop('disabled', false);
+          procedure.change();
+          firstStartOfEditor = false;
+        });
+      }
+
+    });
+
+    procedure.change(function() {
+
+      var selectedApp = $('#node-input-app').val() || "";
+      var selectedProcedure = $('#node-input-procedure').val() || "";
+      var funcTextLength = node.editor.getValue().length;
+
+      if (selectedProcedure.length > 0 && !firstStartOfEditor) {
+
+        if (funcTextLength > 0) {
+
+          // If user pressed cancel, so don´t fetch the data - just return and set values back to the old status
+          if (confirm("Are you sure? This will delete your already written code.") == false) {
+
+            // If cancel pressed, so set the values back to old values
+
+            $('#node-input-app').val(node.oldSelectedApp);
+            $('#node-input-procedure').val(node.oldSelectedProcedure);
+            procedure.prop('disabled', false);
+            node.base = node.oldBase;
+
+            return
+
+          } else {
+            tmpFunc = "";
+          }
+
+        }
+
+        if (tmpFunc.length > 0) {
+
+          node.editor.setValue(tmpFunc);
+          return;
+
+        }
+
+        $.getJSON('parameters/' + selectedApp + '/' + selectedProcedure, function(data) {
+
+          // Create and set text when a procedure is selected
+          var preDefinedText = '/* \nRPC Description: ' + data.description + ' \n\nParameters: \n'
+          for (var i in data.parameters) {
+
+            preDefinedText += ' - ' + data.parameters[i].type + ' ' + data.parameters[i].name + ' \n';
+
+          }
+
+          preDefinedText += '*/ \n\n';
+
+          var parametersToPass = [];
+
+          for (var i in data.parameters) {
+
+            preDefinedText += 'var ' + data.parameters[i].name + ' = msg.payload[' + i + '];' + ' // ' + data.parameters[i].description + '\n';
+            parametersToPass.push(data.parameters[i].name);
+
+          }
+          preDefinedText += '\n// ' + selectedProcedure + ' is calling the RPC method and returns the result in a callback \n';
+          preDefinedText += selectedProcedure + '([' + parametersToPass.toString() + '], function(result) { \n';
+          preDefinedText += '    node.send({payload: result}); \n}); \n'
+          preDefinedText += 'return;'
+
+          node.editor.setValue(preDefinedText);
+
+        });
+
+        // Store actual selected values (for case user select another proc or app and pressed cancel)
+        node.oldSelectedApp = $('#node-input-app').val();
+        node.oldSelectedProcedure = $('#node-input-procedure').val();
+
+      }
+
+
+
+    });
+
+  }
+</script>

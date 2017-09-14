@@ -1,0 +1,42 @@
+<!--
+/* Continental Automotive AG, foss@continental-corporation.com 
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */ 
+ -->
+
+<!doctype html>
+
+<html>
+  <head>
+    <title>poly-app</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="import" href="../bower_components/polymer/lib/elements/dom-bind.html">
+      <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+      <link rel="import" href="../bower_components/iron-input/iron-input.html">
+  </head>
+  <body>
+  <dom-bind id="db1">
+    <template>
+        
+      <h2> inject global value in dombound template </h2> 
+      <h4> global value injected: {{injected.value1}} </h4>
+ 
+    </template>
+  </dom-bind>
+  
+  <script>
+
+         var db1 = document.querySelector('#db1');
+         var j=0;
+         db1.injected= {value1:0};
+
+         setInterval(() => {  
+            j++;
+             // inject value in template
+            db1.set('injected', {value1:j});
+        }, 500);
+  </script>
+  </body>
+</html>

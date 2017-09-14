@@ -1,0 +1,7 @@
+{
+  "name": "html-use-polymer-template",
+  "short_name": "html-use-polymer-template",
+  "description": "html-use-polymer-template",
+  "start_url": "src/index1.html",
+  "display": "standalone"
+}
